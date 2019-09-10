@@ -28,7 +28,6 @@ public class Pacman implements IEntityObject {
 
   @Override
   public void effectWhenEaten() {
-
   }
 
   @Override
@@ -40,86 +39,34 @@ public class Pacman implements IEntityObject {
   public boolean isPathBlocked() {
     switch (getCurrentDirection()) {
       case Up:
-        return gameBoard.boardMap.get(new Point(currentPosition.x, currentPosition.y + 1))
+        return gameBoard.boardMap.getValue(new Point(currentPosition.x, currentPosition.y + 1))
             .isSolid();
       case Down:
-        return gameBoard.boardMap.get(new Point(currentPosition.x, currentPosition.y - 1))
+        return gameBoard.boardMap.getValue(new Point(currentPosition.x, currentPosition.y - 1))
             .isSolid();
       case Right:
-        return gameBoard.boardMap.get(new Point(currentPosition.x + 1, currentPosition.y))
+        return gameBoard.boardMap.getValue(new Point(currentPosition.x + 1, currentPosition.y))
             .isSolid();
       case Left:
-        return gameBoard.boardMap.get(new Point(currentPosition.x - 1, currentPosition.y))
+        return gameBoard.boardMap.getValue(new Point(currentPosition.x - 1, currentPosition.y))
             .isSolid();
-    }
-    return true;
-  }
-
-  @Override
-  public boolean isPathAtEndOfMap() {
-    switch (getCurrentDirection()) {
-      case Up:
-        return currentPosition.y == gameBoard.boardMap.keySet().stream().map(
-            iGameObject -> iGameObject.y).reduce(Integer::max).orElse(0);
-      case Down:
-        return currentPosition.y == 0;
-      case Right:
-        return currentPosition.x == gameBoard.boardMap.keySet().stream().map(
-            iGameObject -> iGameObject.x).reduce(Integer::max).orElse(0);
-      case Left:
-        return currentPosition.x == 0;
     }
     return true;
   }
 
   @Override
   public void movePositionOnBoardValidation() {
-    if (isPathAtEndOfMap()) { //fix breaking path blocked null pointer
-      movePositionOnBoardWithWrapping();
-      return;
-    }
     if (isPathBlocked()) {
       return;
     }
-      movePositionOnBoard();
+    movePositionOnBoard();
   }
 
   @Override
   public void movePositionOnBoard() {
-    switch (currentDirection) {
-      case Up:
-        currentPosition.y += 1;
-        break;
-      case Down:
-        currentPosition.y -= 1;
-        break;
-      case Left:
-        currentPosition.x -= 1;
-        break;
-      case Right:
-        currentPosition.x += 1;
-        break;
-    }
-  }
-
-  @Override
-  public void movePositionOnBoardWithWrapping() {
-    switch (currentDirection) {
-      case Up:
-        currentPosition.y = 0;
-        break;
-      case Down:
-        currentPosition.y = gameBoard.boardMap.keySet().stream().map(
-            iGameObject -> iGameObject.y).reduce(Integer::max).orElse(0);
-        break;
-      case Right:
-        currentPosition.x = 0;
-        break;
-      case Left:
-        currentPosition.x = gameBoard.boardMap.keySet().stream().map(
-            iGameObject -> iGameObject.x).reduce(Integer::max).orElse(0);
-        break;
-    }
+    //gameBoard.boardMap.setValue(currentPosition, new Dot());
+    gameBoard.boardMap.getNeighbouringNode(currentPosition, currentDirection).Value = this;
+    currentPosition = gameBoard.boardMap.getNeighbouringNode(currentPosition, currentDirection).Position;
   }
 
   @Override
@@ -135,5 +82,10 @@ public class Pacman implements IEntityObject {
   @Override
   public Point getCurrentPosition() {
     return currentPosition;
+  }
+
+  @Override
+  public String toString() {
+    return "V";
   }
 }

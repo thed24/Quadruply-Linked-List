@@ -7,4 +7,5 @@ public interface IGameObject {
   boolean isEdible();
 
   void effectWhenEaten();
+
 }

@@ -8,13 +8,9 @@ public interface IEntityObject extends IGameObject {
 
   boolean isPathBlocked();
 
-  boolean isPathAtEndOfMap();
-
   void movePositionOnBoardValidation();
 
   void movePositionOnBoard();
-
-  void movePositionOnBoardWithWrapping();
 
   Directions getCurrentDirection();
 
