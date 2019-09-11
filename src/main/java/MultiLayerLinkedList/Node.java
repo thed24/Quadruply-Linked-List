@@ -5,13 +5,11 @@ import LogicLayer.IGameObject;
 import java.awt.Point;
 
 public class Node {
-  public Node Up, Down, Left, Right;
-  public Point Position;
-  public IGameObject Value;
+  public Node up, down, left, right;
+  public int value;
 
   public Node() {
-    Value = new Dot();
-    Position = new Point(0,0);
-    Up = Down = Left = Right = null;
+    value = 0;
+    up = down = left = right = null;
   }
 }

@@ -1,117 +1,83 @@
 package MultiLayerLinkedList;
 
-import LogicLayer.Directions;
-import LogicLayer.IGameObject;
-import java.awt.Point;
-
 public class MultiLayerLinkedList {
 
   private Node referenceNode;
   private Node rowIteratorNode;
-  private Node columnIterator;
+  private Node columnIteratorNode;
   private int width, height;
 
-  public MultiLayerLinkedList(int Width, int Height) {
-    width = Width;
-    height = Height;
+  public MultiLayerLinkedList(int width, int height) {
+    this.width = width;
+    this.height = height;
     referenceNode = new Node();
-    rowIteratorNode = columnIterator = referenceNode;
+    rowIteratorNode = columnIteratorNode = referenceNode;
 
-    for (int I = 0; I < Height; ++I) {
-      for (int J = 0; J < Width; ++J) {
-        if (I == 0) { //if first row
-          if (J < Width - 1) { //if not end of column
+    for (int I = 0; I < height; ++I) {
+      for (int J = 0; J < width; ++J) {
+        if (I == 0) {
+          if (J < width - 1) {
             rowIteratorNode.Right = new Node();
             rowIteratorNode.Right.Left = rowIteratorNode;
             rowIteratorNode = rowIteratorNode.Right;
           }
         } else {
-          if (J < Width - 1) {//if not end of column
+          if (J < width - 1) {
             rowIteratorNode.Right = new Node();
-            rowIteratorNode.Up.Down = rowIteratorNode; //Up alters own down
+            rowIteratorNode.Up.Down = rowIteratorNode;
             rowIteratorNode.Right.Left = rowIteratorNode;
             rowIteratorNode.Right.Up = rowIteratorNode.Up.Right;
             rowIteratorNode = rowIteratorNode.Right;
           }
         }
       }
-      if (I < Height - 1) {
-        columnIterator.Down = new Node();
-        columnIterator.Down.Up = columnIterator;
-        rowIteratorNode = columnIterator = columnIterator.Down;
+      if (I < height - 1) {
+        columnIteratorNode.Down = new Node();
+        columnIteratorNode.Down.Up = columnIteratorNode;
+        rowIteratorNode = columnIteratorNode = columnIteratorNode.Down;
       }
     }
 
-    for (int I = 0; I < Height; ++I) {
-      for (int J = 0; J < Width; ++J) {
+    for (int I = 0; I < height; ++I) {
+      for (int J = 0; J < width; ++J) {
         wrapNode(I, J);
-        getNode(I, J).Position = new Point(I, J);
       }
       System.out.println();
     }
   }
 
-  public void setValue(Point coordinate, IGameObject Value) {
-    int X = coordinate.x;
-    int Y = coordinate.y;
+  public void setValue(int xAxisPosition, int yAxisPosition, int newValue) {
     rowIteratorNode = referenceNode;
 
-    for (int I = 0; I < Y; ++I) {
+    for (int I = 0; I < yAxisPosition; ++I) {
       rowIteratorNode = rowIteratorNode.Down;
     }
 
-    for (int J = 0; J < X; ++J) {
+    for (int J = 0; J < xAxisPosition; ++J) {
       rowIteratorNode = rowIteratorNode.Right;
     }
 
-    rowIteratorNode.Value = Value;
+    rowIteratorNode.Value = newValue;
   }
 
-  public IGameObject getValue(Point coordinate) {
-    int X = coordinate.x;
-    int Y = coordinate.y;
-
+  public int getValue(int xAxisPosition, int yAxisPosition) {
     rowIteratorNode = referenceNode;
 
-    for (int I = 0; I < Y; ++I) {
+    for (int I = 0; I < yAxisPosition; ++I) {
       rowIteratorNode = rowIteratorNode.Down;
     }
 
-    for (int J = 0; J < X; ++J) {
+    for (int J = 0; J < xAxisPosition; ++J) {
       rowIteratorNode = rowIteratorNode.Right;
     }
 
     return rowIteratorNode.Value;
   }
 
-  public Node getNeighbouringNode(Point coordinate, Directions currentDirection) {
+  public Node getNodeAtPosition() {
     int X = coordinate.x;
     int Y = coordinate.y;
 
-    rowIteratorNode = referenceNode;
-
-    for (int I = 0; I < Y; ++I) {
-      rowIteratorNode = rowIteratorNode.Down;
-    }
-
-    for (int J = 0; J < X; ++J) {
-      rowIteratorNode = rowIteratorNode.Right;
-    }
-
-    switch (currentDirection) {
-      case Up:
-        return rowIteratorNode.Up;
-      case Down:
-        return rowIteratorNode.Down;
-      case Left:
-        return rowIteratorNode.Left;
-      case Right:
-        return rowIteratorNode.Right;
-    }
-    return null;
-  }
-
-  private Node getNode(int X, int Y) {
     rowIteratorNode = referenceNode;
 
     for (int I = 0; I < Y; ++I) {
@@ -153,11 +119,11 @@ public class MultiLayerLinkedList {
     }
   }
 
-  public int GetWidth() {
+  public int getWidth() {
     return width;
   }
 
-  public int GetHeight() {
+  public int getHeight() {
     return height;
   }
 }
