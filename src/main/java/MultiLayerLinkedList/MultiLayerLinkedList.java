@@ -17,24 +17,24 @@ public class MultiLayerLinkedList {
       for (int J = 0; J < width; ++J) {
         if (I == 0) {
           if (J < width - 1) {
-            rowIteratorNode.Right = new Node();
-            rowIteratorNode.Right.Left = rowIteratorNode;
-            rowIteratorNode = rowIteratorNode.Right;
+            rowIteratorNode.right = new Node();
+            rowIteratorNode.right.left = rowIteratorNode;
+            rowIteratorNode = rowIteratorNode.right;
           }
         } else {
           if (J < width - 1) {
-            rowIteratorNode.Right = new Node();
-            rowIteratorNode.Up.Down = rowIteratorNode;
-            rowIteratorNode.Right.Left = rowIteratorNode;
-            rowIteratorNode.Right.Up = rowIteratorNode.Up.Right;
-            rowIteratorNode = rowIteratorNode.Right;
+            rowIteratorNode.right = new Node();
+            rowIteratorNode.up.down = rowIteratorNode;
+            rowIteratorNode.right.left = rowIteratorNode;
+            rowIteratorNode.right.up = rowIteratorNode.up.right;
+            rowIteratorNode = rowIteratorNode.right;
           }
         }
       }
       if (I < height - 1) {
-        columnIteratorNode.Down = new Node();
-        columnIteratorNode.Down.Up = columnIteratorNode;
-        rowIteratorNode = columnIteratorNode = columnIteratorNode.Down;
+        columnIteratorNode.down = new Node();
+        columnIteratorNode.down.up = columnIteratorNode;
+        rowIteratorNode = columnIteratorNode = columnIteratorNode.down;
       }
     }
 
@@ -50,72 +50,69 @@ public class MultiLayerLinkedList {
     rowIteratorNode = referenceNode;
 
     for (int I = 0; I < yAxisPosition; ++I) {
-      rowIteratorNode = rowIteratorNode.Down;
+      rowIteratorNode = rowIteratorNode.down;
     }
 
     for (int J = 0; J < xAxisPosition; ++J) {
-      rowIteratorNode = rowIteratorNode.Right;
+      rowIteratorNode = rowIteratorNode.right;
     }
 
-    rowIteratorNode.Value = newValue;
+    rowIteratorNode.value = newValue;
   }
 
   public int getValue(int xAxisPosition, int yAxisPosition) {
     rowIteratorNode = referenceNode;
 
     for (int I = 0; I < yAxisPosition; ++I) {
-      rowIteratorNode = rowIteratorNode.Down;
+      rowIteratorNode = rowIteratorNode.down;
     }
 
     for (int J = 0; J < xAxisPosition; ++J) {
-      rowIteratorNode = rowIteratorNode.Right;
+      rowIteratorNode = rowIteratorNode.right;
     }
 
-    return rowIteratorNode.Value;
+    return rowIteratorNode.value;
   }
 
-  public Node getNodeAtPosition() {
-    int X = coordinate.x;
-    int Y = coordinate.y;
-
+  public Node getNodeAtPosition(int xAxisPosition, int yAxisPosition) {
     rowIteratorNode = referenceNode;
 
-    for (int I = 0; I < Y; ++I) {
-      rowIteratorNode = rowIteratorNode.Down;
+    for (int I = 0; I < yAxisPosition; ++I) {
+      rowIteratorNode = rowIteratorNode.down;
     }
 
-    for (int J = 0; J < X; ++J) {
-      rowIteratorNode = rowIteratorNode.Right;
+    for (int J = 0; J < xAxisPosition; ++J) {
+      rowIteratorNode = rowIteratorNode.right;
     }
 
     return rowIteratorNode;
   }
 
   private void wrapNode(int I, int J) {
-    rowIteratorNode = getNode(I, J);
+    rowIteratorNode = getNodeAtPosition(I, J);
 
     if (I == 0) {
-      Node newNode = getNode(height - 1, J);
-      rowIteratorNode = getNode(I, J);
-      rowIteratorNode.Left = newNode;
+      Node newNode = getNodeAtPosition(height - 1, J);
+      rowIteratorNode = getNodeAtPosition(I, J);
+      rowIteratorNode.left = newNode;
     }
 
     if (J == 0) {
-      Node newNode = getNode(I, width - 1);
-      rowIteratorNode = getNode(I, J);
-      rowIteratorNode.Up = newNode;
+      Node newNode = getNodeAtPosition(I, width - 1);
+      rowIteratorNode = getNodeAtPosition(I, J);
+      rowIteratorNode.up = newNode;
     }
 
     if (I == width - 1) {
-      Node newNode = getNode(0, J);
-      rowIteratorNode = getNode(I, J);
-      rowIteratorNode.Right = newNode;
+      Node newNode = getNodeAtPosition(0, J);
+      rowIteratorNode = getNodeAtPosition(I, J);
+      rowIteratorNode.right = newNode;
     }
 
     if (J == height - 1) {
-      Node newNode = getNode(I, 0);
-      rowIteratorNode = getNode(I, J);
-      rowIteratorNode.Down = newNode;
+      Node newNode = getNodeAtPosition(I, 0);
+      rowIteratorNode = getNodeAtPosition(I, J);
+      rowIteratorNode.down = newNode;
     }
   }
 
