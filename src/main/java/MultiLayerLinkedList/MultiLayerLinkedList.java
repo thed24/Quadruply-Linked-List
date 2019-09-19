@@ -29,6 +29,9 @@ public class MultiLayerLinkedList {
             rowIteratorNode.right.up = rowIteratorNode.up.right;
             rowIteratorNode = rowIteratorNode.right;
           }
+          if (J == Width - 1) {
+            rowIteratorNode.up.down = rowIteratorNode;
+          }
         }
       }
       if (I < height - 1) {
@@ -40,7 +43,7 @@ public class MultiLayerLinkedList {
 
     for (int I = 0; I < height; ++I) {
       for (int J = 0; J < width; ++J) {
-        wrapNode(I, J);
+        wrapNode(J, I);
       }
       System.out.println();
     }
